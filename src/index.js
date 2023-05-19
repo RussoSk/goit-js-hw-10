@@ -75,8 +75,13 @@ const DEBOUNCE_DELAY = 300;
 //     countryInfo.innerHTML = countryHTML;
 //   }
 
+
+// 2
+// 
+// 3 
 import { fetchCountries } from './fetchCountries.js';
 import debounce from 'lodash.debounce';
+import Notiflix from 'notiflix';
 
 const searchBox = document.querySelector('#search-box');
 const countryList = document.querySelector('.country-list');
@@ -90,46 +95,36 @@ function handleSearch(event) {
   if (searchTerm) {
     fetchCountries(searchTerm)
       .then(countries => {
-        renderCountryList(countries);
+        if (countries.length > 10) {
+          showNotification('Too many matches found. Please enter a more specific name.');
+          clearResults();
+        } else if (countries.length > 1 && countries.length <= 10) {
+          renderCountryList(countries);
+          clearInfo();
+        } else if (countries.length === 1) {
+          renderCountryInfo(countries[0]);
+          clearResults();
+        } else {
+          clearResults();
+          clearInfo();
+        }
       })
       .catch(error => {
         console.error(error);
-        countryList.innerHTML = 'Error occurred while fetching countries.';
+        showNotification('Error occurred while fetching countries.');
       });
   } else {
-    countryList.innerHTML = '';
-    countryInfo.innerHTML = '';
+    clearResults();
+    clearInfo();
   }
 }
 
 function renderCountryList(countries) {
-  if (countries.length === 0) {
-    countryList.innerHTML = 'No countries found.';
-    return;
-  }
-
   const countryItems = countries
-    .map(country => `<li>${country.name.official}</li>`)
+    .map(country => `<li><img src="${country.flags.png}" alt="${country.flags.alt}">${country.name.official}</li>`)
     .join('');
+
   countryList.innerHTML = countryItems;
-
-  countryList.addEventListener('click', handleCountryItemClick);
-}
-
-function handleCountryItemClick(event) {
-  const selectedCountry = event.target.textContent;
-
-  fetchCountries(selectedCountry)
-    .then(countries => {
-      if (countries.length > 0) {
-        const country = countries[0];
-        renderCountryInfo(country);
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      countryInfo.innerHTML = 'Error occurred while fetching country.';
-    });
 }
 
 function renderCountryInfo(country) {
@@ -145,4 +140,16 @@ function renderCountryInfo(country) {
   `;
 
   countryInfo.innerHTML = countryHTML;
+}
+
+function clearResults() {
+  countryList.innerHTML = '';
+}
+
+function clearInfo() {
+  countryInfo.innerHTML = '';
+}
+
+function showNotification(message) {
+  Notiflix.Notify.info(message);
 }
