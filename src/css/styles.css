@@ -18,3 +18,18 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+img {
+  width: 60px;
+  
+}
+ul {
+  padding: 0;
+  list-style: none;
+}
+ul,h2 span {
+  font-size: 35px;
+  font-family: 'Times New Roman', Times, serif;
+}
+span {
+  font-weight: bold;
+}

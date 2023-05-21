@@ -1,23 +1,4 @@
-// export function fetchCountries(name) {
-//     const url = `https://restcountries.com/v2/name/${name}`;
-    
-//     return fetch(url)
-//       .then(response => {
-//         if (!response.ok) {
-//           throw new Error('Unable to fetch countries.');
-//         }
-//         return response.json();
-//       })
-//       .then(data => {
-//         return data;
-//       })
-//       .catch(error => {
-//         console.error(error);
-//         return [];
-//       });
-//   }
 
-  // fetchCountries.js (продовження)
 
   export function fetchCountries(name) {
     const params = new URLSearchParams({
