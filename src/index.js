@@ -67,12 +67,12 @@ function renderCountryInfo(country) {
   const { name, capital, population, flags, languages } = country;
   const languageList = Object.values(languages).join(', ');
 
-  const countryHTML = `<div class="plate-wrap">
+  const countryHTML = `
     <h2><img src="${flags.png}" alt="${flags.alt}" /><span>${name.official}<span></h2>
     <p><strong>Capital:</strong> ${capital}</p>
     <p><strong>Population:</strong> ${population}</p>
     <p><strong>Languages:</strong> ${languageList}</p>
-    </div>
+    
   `;
 
   countryInfo.innerHTML = countryHTML;
